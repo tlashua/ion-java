@@ -18,7 +18,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.amazon.ion</groupId>
   <artifactId>ion-java</artifactId>
-  <version>1.8.1-SNAPSHOT</version>
+  <version>0.2.0-TIM</version>
   <packaging>bundle</packaging>
 
   <name>${project.groupId}:${project.artifactId}</name>
@@ -81,7 +81,7 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
-      <version>5.7.1</version>
+      <version>5.8.0-M1</version>
       <scope>test</scope>
     </dependency>
 
@@ -290,7 +290,7 @@
             <!-- Package the source jar. -->
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-source-plugin</artifactId>
-            <version>2.2.1</version>
+            <version>3.2.1</version>
             <executions>
               <execution>
                 <id>attach-sources</id>
@@ -332,7 +332,7 @@
             <!-- GPG signing. -->
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-gpg-plugin</artifactId>
-            <version>1.5</version>
+            <version>1.6</version>
             <executions>
               <execution>
                 <id>sign-artifacts</id>

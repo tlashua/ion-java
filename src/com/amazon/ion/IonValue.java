@@ -17,6 +17,7 @@ package com.amazon.ion;
 
 import com.amazon.ion.system.IonTextWriterBuilder;
 import java.util.Collections;
+import java.util.Optional;
 import java.util.concurrent.CountDownLatch;
 
 /**
@@ -522,4 +523,10 @@ public interface IonValue
      * {@inheritDoc}
      */
     public int hashCode();
+
+    default Optional<IonInt> toIonInt() {
+        return getType() == IonType.INT ? Optional.of((IonInt)this) :  Optional.empty();
+    }
+
+
 }
