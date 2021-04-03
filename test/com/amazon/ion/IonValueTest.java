@@ -15,25 +15,28 @@
 
 package com.amazon.ion;
 
-import static com.amazon.ion.junit.IonAssert.assertAnnotations;
-import static java.lang.String.format;
-
 import com.amazon.ion.junit.IonAssert;
 import com.amazon.ion.system.IonTextWriterBuilder;
 import com.amazon.ion.system.IonWriterBuilder.InitialIvmHandling;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import static com.amazon.ion.junit.IonAssert.assertAnnotations;
+import static java.lang.String.format;
+
 
 public class IonValueTest
-    extends IonTestCase
-{
+        extends IonTestCase {
     private final String ann = "ann";
     private final String ben = "ben";
 
     @Test
-    public void testGetFieldNameSymbol()
-    {
+    public void testGetFieldNameSymbol() {
         IonValue v = system().newNull();
         assertEquals(null, v.getFieldNameSymbol());
 
@@ -43,8 +46,7 @@ public class IonValueTest
 
 
     @Test
-    public void testGetTypeAnnotationsImmutability()
-    {
+    public void testGetTypeAnnotationsImmutability() {
         IonValue v = system().newNull();
         v.setTypeAnnotations(ann);
 
@@ -57,8 +59,7 @@ public class IonValueTest
     }
 
     @Test
-    public void testGetTypeAnnotationSymbols()
-    {
+    public void testGetTypeAnnotationSymbols() {
         IonValue v = system().newNull();
         SymbolToken[] anns = v.getTypeAnnotationSymbols();
         assertArrayEquals(SymbolToken.EMPTY_ARRAY, anns);
@@ -70,8 +71,7 @@ public class IonValueTest
     }
 
     @Test
-    public void testGetTypeAnnotationSymbolsImmutability()
-    {
+    public void testGetTypeAnnotationSymbolsImmutability() {
         IonValue v = system().newNull();
         v.setTypeAnnotations(ann);
 
@@ -84,8 +84,7 @@ public class IonValueTest
     }
 
     @Test
-    public void testHasTypeAnnotation()
-    {
+    public void testHasTypeAnnotation() {
         IonValue v = system().newNull();
         assertFalse(v.hasTypeAnnotation(null));
         assertFalse(v.hasTypeAnnotation(""));
@@ -98,16 +97,14 @@ public class IonValueTest
     }
 
     @Test(expected = ReadOnlyValueException.class)
-    public void testSetTypeAnnotationsOnReadOnlyValue()
-    {
+    public void testSetTypeAnnotationsOnReadOnlyValue() {
         IonValue v = system().newNull();
         v.makeReadOnly();
         v.setTypeAnnotations(ann);
     }
 
     @Test
-    public void testSetTypeAnnotations()
-    {
+    public void testSetTypeAnnotations() {
         IonValue v = system().newNull();
         assertAnnotations(v);
 
@@ -132,8 +129,7 @@ public class IonValueTest
     }
 
     @Test
-    public void testSetTypeAnnotationInterning()
-    {
+    public void testSetTypeAnnotationInterning() {
         SymbolTable systemSymtab = system().getSystemSymbolTable();
         SymbolToken nameSym = systemSymtab.find(SystemSymbols.NAME);
 
@@ -150,22 +146,19 @@ public class IonValueTest
     }
 
     @Test(expected = NullPointerException.class)
-    public void testSetTypeAnnotationsWithNullString()
-    {
+    public void testSetTypeAnnotationsWithNullString() {
         IonValue v = system().newNull();
         v.setTypeAnnotations(ann, null);
     }
 
-    public void testSetTypeAnnotationsWithEmptyString()
-    {
+    public void testSetTypeAnnotationsWithEmptyString() {
         IonValue v = system().newNull();
         v.setTypeAnnotations(ann, "");
     }
 
     @Test
-    public void testSetTypeAnnotationsThenModifyingThem()
-    {
-        String[] anns = { ann, ben };
+    public void testSetTypeAnnotationsThenModifyingThem() {
+        String[] anns = {ann, ben};
         IonValue v = system().newNull();
         v.setTypeAnnotations(anns);
 
@@ -177,16 +170,15 @@ public class IonValueTest
     //------------------------------------------------------------------------
 
     @Test(expected = ReadOnlyValueException.class)
-    public void testAddTypeAnnotationsOnReadOnlyValue()
-    {
+    public void testAddTypeAnnotationsOnReadOnlyValue() {
         IonValue v = system().newNull();
         v.makeReadOnly();
         v.addTypeAnnotation(ann);
     }
 
-    @Test @Ignore
-    public void testAddAnnotationDuplicate()
-    {
+    @Test
+    @Ignore
+    public void testAddAnnotationDuplicate() {
         IonValue v = system().newNull();
         assertAnnotations(v);
 
@@ -198,8 +190,7 @@ public class IonValueTest
     }
 
     @Test
-    public void testCloneAndRetainDuplicateAnnotations()
-    {
+    public void testCloneAndRetainDuplicateAnnotations() {
         IonStruct v = system().newNullStruct();
         v.setTypeAnnotations(ann, ann);
 
@@ -212,8 +203,7 @@ public class IonValueTest
 
 
     @Test
-    public void testRemoveTypeAnnotation()
-    {
+    public void testRemoveTypeAnnotation() {
         IonValue v = system().singleValue("null");
         v.removeTypeAnnotation(ann);
         assertAnnotations(v);
@@ -242,8 +232,7 @@ public class IonValueTest
 
 
     @Test
-    public void testRemoveTypeAnnotationNull()
-    {
+    public void testRemoveTypeAnnotationNull() {
         IonValue v = system().newNull();
         v.removeTypeAnnotation(null);
         v.removeTypeAnnotation("");
@@ -255,8 +244,7 @@ public class IonValueTest
     }
 
     @Test
-    public void testRemoveDuplicateAnnotation()
-    {
+    public void testRemoveDuplicateAnnotation() {
         IonValue v = system().singleValue("ann::ben::ann::null");
         assertAnnotations(v, ann, ben, ann);
         v.removeTypeAnnotation(ann);
@@ -264,8 +252,7 @@ public class IonValueTest
     }
 
     @Test
-    public void testDetachWithUnknownAnnotation()
-    {
+    public void testDetachWithUnknownAnnotation() {
         String sharedSymbolTable = "$ion_symbol_table::{imports:[{name:\"foo\", version: 1, max_id: 90}]}";
         IonList list = (IonList) system().singleValue(sharedSymbolTable + "[$99::null]");
         IonValue child = list.get(0);
@@ -277,30 +264,28 @@ public class IonValueTest
 
     @Test
     public void testCustomToString()
-        throws Exception
-    {
+            throws Exception {
         IonValue v = system().singleValue("[hello,a::12]");
 
         assertEquals("[hello,a::12]",
-                     v.toString(IonTextWriterBuilder.standard()));
+                v.toString(IonTextWriterBuilder.standard()));
         assertEquals("[\"hello\",12]",
-                     v.toString(IonTextWriterBuilder.json()));
+                v.toString(IonTextWriterBuilder.json()));
         assertEquals("$ion_1_0 [hello,a::12]",
-                     v.toString(IonTextWriterBuilder.standard()
-                                    .withInitialIvmHandling(InitialIvmHandling.ENSURE)));
+                v.toString(IonTextWriterBuilder.standard()
+                        .withInitialIvmHandling(InitialIvmHandling.ENSURE)));
 
         // TODO amzn/ion-java/issues/57 determine if these really should be platform independent newlines
         final String pretty = format("%n[%n  hello,%n  a::12%n]");
         assertEquals(pretty,
-                     v.toString(IonTextWriterBuilder.pretty()));
+                v.toString(IonTextWriterBuilder.pretty()));
         assertEquals(pretty,
-                     v.toPrettyString());
+                v.toPrettyString());
     }
 
 
     @Test
-    public void testCloningSystemLookingValue()
-    {
+    public void testCloningSystemLookingValue() {
         IonList list = (IonList) oneValue("[$ion_1_0]");
         IonValue v = list.get(0);
 
@@ -312,5 +297,114 @@ public class IonValueTest
         IonSystem system2 = newSystem(null);
         v2 = system2.clone(v);
         IonAssert.assertIonEquals(v, v2);
+    }
+
+    // IonBool IonDecimal IonFloat IonInt IonList IonNull IonNumber IonSequence IonString IonStruct IonSymbol
+
+
+//    @Test
+//    public void testToIonInt() {
+//        int expected = 27;
+//        IonValue v = system().newInt(expected);
+//
+//        int actual = v.toIonInt().map(IonInt::intValue).orElseThrow(RuntimeException::new);
+//        assertEquals(expected, actual);
+//    }
+//
+//
+//    @Test
+//    public void testToIonString() {
+//        String expected = "test string";
+//        IonValue v = system().newString(expected);
+//
+//        String actual = v.toIonString().map(IonString::stringValue).orElseThrow(RuntimeException::new);
+//        assertEquals(expected, actual);
+//    }
+
+    @Test
+    public void testToIonBool() {
+        final boolean expected = true;
+        IonValue v = system().newBool(expected);
+
+        boolean actual = v.toIonBool().map(IonBool::booleanValue).orElseThrow();
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testToIonDecimal() {
+        double expected = Double.MAX_VALUE;
+        IonValue v = system().newDecimal(expected);
+
+        double actual = v.toIonDecimal().map(IonDecimal::doubleValue).orElseThrow();
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testToIonFloat() {
+        final float expected = Float.MAX_VALUE;
+        IonValue v = system().newFloat(expected);
+
+        float actual = v.toIonFloat().map(IonFloat::floatValue).orElseThrow();
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testToIonInt() {
+        int expected = Integer.MAX_VALUE;
+        IonValue v = system().newInt(expected);
+
+        int actual = v.toIonInt().map(IonInt::intValue).orElseThrow();
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testToIonList() {
+        int[] ints = {1, 2, 3};
+        List<Integer> expected = Arrays.stream(ints).boxed().collect(Collectors.toList());
+        IonValue v = system().newList(ints);
+
+        List<Integer> actual = v.toIonList().orElseThrow()
+                .stream()
+                .map(IonValue::toIonInt)
+                .map(Optional::orElseThrow)
+                .map(IonInt::intValue).collect(Collectors.toList());
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testToIonNull() {
+        IonValue v = system().newNull();
+
+        IonNull actual = v.toIonNull().orElseThrow();
+        assertTrue(actual.isNullValue());
+    }
+
+    @Test
+    public void testToIonString() {
+        String expected = "test string 23";
+        IonValue v = system().newString(expected);
+
+        String actual = v.toIonString().map(IonString::stringValue).orElseThrow();
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testToIonStruct() {
+        IonStruct expected = system().newEmptyStruct();
+        expected.add("test field 1", system().newInt(28));
+        IonValue v = expected;
+
+        IonStruct actual = v.toIonStruct().orElseThrow();
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testToIonSymbol() {
+        String expected = "testSymbol1";
+        IonValue v = system().newSymbol(expected);
+
+        String actual = v.toIonSymbol().map(IonSymbol::symbolValue).map(SymbolToken::getText).orElseThrow();
+        assertEquals(expected, actual);
     }
 }

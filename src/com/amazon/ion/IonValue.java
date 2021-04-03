@@ -524,9 +524,39 @@ public interface IonValue
      */
     public int hashCode();
 
-    default Optional<IonInt> toIonInt() {
-        return getType() == IonType.INT ? Optional.of((IonInt)this) :  Optional.empty();
+    default Optional<IonBool> toIonBool() {
+        return this instanceof IonBool ? Optional.of((IonBool)this) :  Optional.empty();
     }
 
+    default Optional<IonDecimal> toIonDecimal() {
+        return this instanceof IonDecimal ? Optional.of((IonDecimal)this) :  Optional.empty();
+    }
 
+    default Optional<IonFloat> toIonFloat() {
+        return this instanceof IonFloat ? Optional.of((IonFloat)this) :  Optional.empty();
+    }
+
+    default Optional<IonInt> toIonInt() {
+        return this instanceof IonInt ? Optional.of((IonInt)this) :  Optional.empty();
+    }
+
+    default Optional<IonList> toIonList() {
+        return this instanceof IonList ? Optional.of((IonList)this) :  Optional.empty();
+    }
+
+    default Optional<IonNull> toIonNull() {
+        return this instanceof IonNull ? Optional.of((IonNull)this) :  Optional.empty();
+    }
+
+    default Optional<IonString> toIonString() {
+        return this instanceof IonString ? Optional.of((IonString)this) :  Optional.empty();
+    }
+
+    default Optional<IonStruct> toIonStruct() {
+        return this instanceof IonStruct ? Optional.of((IonStruct)this) :  Optional.empty();
+    }
+
+    default Optional<IonSymbol> toIonSymbol() {
+        return this instanceof IonSymbol ? Optional.of((IonSymbol)this) :  Optional.empty();
+    }
 }
