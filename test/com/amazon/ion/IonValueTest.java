@@ -299,28 +299,6 @@ public class IonValueTest
         IonAssert.assertIonEquals(v, v2);
     }
 
-    // IonBool IonDecimal IonFloat IonInt IonList IonNull IonNumber IonSequence IonString IonStruct IonSymbol
-
-
-//    @Test
-//    public void testToIonInt() {
-//        int expected = 27;
-//        IonValue v = system().newInt(expected);
-//
-//        int actual = v.toIonInt().map(IonInt::intValue).orElseThrow(RuntimeException::new);
-//        assertEquals(expected, actual);
-//    }
-//
-//
-//    @Test
-//    public void testToIonString() {
-//        String expected = "test string";
-//        IonValue v = system().newString(expected);
-//
-//        String actual = v.toIonString().map(IonString::stringValue).orElseThrow(RuntimeException::new);
-//        assertEquals(expected, actual);
-//    }
-
     @Test
     public void testToIonBool() {
         final boolean expected = true;

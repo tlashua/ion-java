@@ -18,7 +18,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.amazon.ion</groupId>
   <artifactId>ion-java</artifactId>
-  <version>0.3.0-TIM</version>
+  <version>0.4.0-TIM</version>
   <packaging>bundle</packaging>
 
   <name>${project.groupId}:${project.artifactId}</name>
@@ -65,7 +65,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.build.timestamp.format>yyyy</maven.build.timestamp.format>
     <build.year>${maven.build.timestamp}</build.year>
-    <jdkVersion>11</jdkVersion>
+    <jdkVersion>1.8</jdkVersion>
   </properties>
 
   <dependencies>
@@ -228,7 +228,7 @@
         <artifactId>maven-javadoc-plugin</artifactId>
         <version>3.2.0</version>
         <configuration>
-          <source>11</source>
+          <source>8</source>
         </configuration>
         <reportSets>
           <reportSet>
